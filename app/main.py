@@ -20,7 +20,7 @@ def health():
 
 @app.post("/plan")
 def create_plan(request: PlanRequest):
-    return graph.invoke(
+    result = graph.invoke(
         {
             "user_request": request.user_request,
             "selected_agents": [],
@@ -29,3 +29,7 @@ def create_plan(request: PlanRequest):
             "final_response": None,
         }
     )
+    return {
+        "release_plan": result["release_plan"],
+        "marketing_plan": result["marketing_plan"],
+    }
