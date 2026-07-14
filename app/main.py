@@ -1,10 +1,11 @@
 from dotenv import load_dotenv
+
+load_dotenv()
+
 from fastapi import FastAPI
 from pydantic import BaseModel
 
 from app.graph.workflow import graph
-
-load_dotenv()
 
 app = FastAPI(title="ArtistOS AI")
 

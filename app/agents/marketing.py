@@ -1,10 +1,10 @@
 from typing import Literal
 
-from langchain_ollama import ChatOllama
 from langgraph.types import Command
 from pydantic import BaseModel
 
 from app.graph.state import ArtistsState
+from app.llm import llm
 
 
 class PlatformPlan(BaseModel):
@@ -18,7 +18,6 @@ class MarketingPlanOutput(BaseModel):
     plans: list[PlatformPlan]
 
 
-llm = ChatOllama(model="gemma4:latest")
 structured_model = llm.with_structured_output(MarketingPlanOutput)
 
 
