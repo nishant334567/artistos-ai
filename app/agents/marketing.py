@@ -1,26 +1,28 @@
 from langchain_ollama import ChatOllama
 from langgraph.types import Command
+from pydantic import BaseModel
+from app.graph.state import ArtistsState
 
-from app.graph.state import ArtistsState, MarketingPlan
+class MarketingPlanOutput(BaseModel):
+    marketing_platform: str
+    marketing_type: str
+    marketing_title: str
+    marketing_description: str
 
 llm = ChatOllama(model="gemma4:latest")
+structured_model = llm.with_structured_output(MarketingPlanOutput)
 
 
 def marketing_planner(state: ArtistsState):
     print("Marketing planner running")
-    response = llm.invoke(
+    response = structured_model.invoke(
         "You are a music marketing planner. "
-        "Given the artist request, write a short marketing plan "
-        "(platform, type, title, description).\n\n"
+        "Fill every field with concrete values for this artist request. "
+        "Pick a primary platform, campaign type, a clear title, "
+        "and a short actionable description.\n\n"
         f"Request: {state['user_request']}"
     )
-    plan: MarketingPlan = {
-        "marketing_platform": "TBD",
-        "marketing_type": "TBD",
-        "marketing_title": "TBD",
-        "marketing_description": response.content,
-    }
     return Command(
-        update={"marketing_plan": plan},
+        update={"marketing_plan": response.model_dump()},
         goto="supervisor",
     )
