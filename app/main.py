@@ -27,10 +27,14 @@ def create_plan(request: PlanRequest):
             "selected_agents": [],
             "release_plan": None,
             "marketing_plan": None,
+            "research": None,
             "final_response": None,
         }
     )
     return {
-        "release_plan": result["release_plan"],
-        "marketing_plan": result["marketing_plan"],
+        # "release_plan": result["release_plan"],
+        # "marketing_plan": result["marketing_plan"],
+        "final_response": result["final_response"],
+        "status": "success",
+        "message": "Plan created successfully",
     }

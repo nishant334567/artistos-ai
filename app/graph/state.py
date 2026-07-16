@@ -18,4 +18,5 @@ class ArtistsState(TypedDict):
     selected_agents: list[str]
     release_plan: list[ReleasePlan] | None
     marketing_plan: list[MarketingPlan] | None
+    research: str | None
     final_response: str | None

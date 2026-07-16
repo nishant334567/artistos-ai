@@ -9,7 +9,7 @@ from app.llm import llm
 
 
 class SupervisorDecision(BaseModel):
-    next_agent: Literal["release_planner", "marketing_planner", "FINISH"]
+    next_agent: Literal["release_planner", "marketing_planner", "final_response", "FINISH"]
     reason: str
 
 
@@ -23,7 +23,8 @@ def supervisor(state: ArtistsState):
 Agents:
 - release_planner: if query is strictly related to releasing, distribution, or streaming platforms
 - marketing_planner: if query is strictly related to marketing, promotion, social strategy, or growth
-- FINISH: if all requested work is done
+- final_response: if all requested work is done
+- FINISH: only if final_response is generated and all requested work is done
 
 Rules:
 1. Never choose an agent whose plan already exists or is not needed.
@@ -32,6 +33,7 @@ Rules:
 User query: {state["user_request"]}
 Release plan: {state["release_plan"]}
 Marketing plan: {state["marketing_plan"]}
+Final response: {state["final_response"]}
 
 Choose next_agent and briefly explain why in reason.
 """
